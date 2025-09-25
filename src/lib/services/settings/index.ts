@@ -245,11 +245,15 @@ class SettingsService {
 	public async userSettingsExist(nickname: string): Promise<boolean> {
 		this.logger.info(`Checking if user settings exist for ${nickname}`);
 
-		const userSettings = await db.query.userSettingsTable.findFirst({
-			where: eq(userSettingsTable.nickname, nickname)
-		});
+		try {
+			const userSettings = await db.query.userSettingsTable.findFirst({
+				where: eq(userSettingsTable.nickname, nickname)
+			});
 
-    return !!userSettings;
+			return !!userSettings;
+		} catch (error) {
+			return false;
+		}
 	}
 
 	/**
